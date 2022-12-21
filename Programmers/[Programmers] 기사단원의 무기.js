@@ -1,21 +1,21 @@
 function solution(number, limit, power) {
   var answer = 0;
   var divisor = {};
-  for (let num = 1; num <= number; ++num) {
-    divisor[num] = 0;
-    for (let j = 1; j * j <= num; ++j) {
-      if (num % j === 0) {
-        divisor += j * j !== num ? 2 : 1;
+  for (let i = 1; i <= number; ++i) {
+    divisor[i] = 0;
+    for (let j = 1; j * j <= i; ++j) {
+      if (j * j === i) {
+        divisor[i] += 1;
+      } else if (i % j === 0) {
+        divisor[i] += 2;
       }
-      if (divisor[num] > limit) {
-        divisor[num] = power;
+      if (divisor[i] > limit) {
+        divisor[i] = power;
         break;
       }
     }
-    answer += divisor[num];
+    answer += divisor[i];
   }
-
-  console.log(divisor);
   return answer;
 }
 
