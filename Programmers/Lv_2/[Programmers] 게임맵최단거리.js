@@ -1,6 +1,8 @@
 const dx = [0, 1, 0, -1];
 const dy = [-1, 0, 1, 0];
 
+const array = Array.from(new Array(n), () => new Array(n).fill(0));
+
 function solution(map) {
   let needVisited = [[0, 0, 1]];
   const n = map.length - 1;
