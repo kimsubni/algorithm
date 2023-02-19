@@ -1,14 +1,14 @@
-const input = require("fs")
-  .readFileSync("/dev/stdin")
-  .toString()
-  .trim()
-  .split("\n");
-
-// const input = `3
-// 4
-// 1 2 3`
+// const input = require("fs")
+//   .readFileSync("/dev/stdin")
+//   .toString()
 //   .trim()
 //   .split("\n");
+
+const input = `3
+4
+1 2 3`
+  .trim()
+  .split("\n");
 
 // 재료의 개수 N, 갑옷만드는데 필요한 수 M
 const N = Number(input[0]);
@@ -30,3 +30,24 @@ for (let i = 0; i < N; ++i) {
 }
 
 console.log(count);
+
+// 투포인터로 문제풀어보기!!
+
+const solution = () => {
+  arr.sort((a, b) => a - b);
+  let count = 0;
+  let i = 0;
+  let j = 0;
+  while (i < j) {
+    if (arr[i] + arr[j] < M) {
+      i++;
+    } else if (A[i] + A[j] > M) {
+      j--;
+    } else {
+      count++;
+      j--;
+      i++;
+    }
+  }
+  console.log(count);
+};
