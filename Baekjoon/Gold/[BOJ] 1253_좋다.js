@@ -19,27 +19,18 @@ for (let i = 0; i < N; ++i) {
 }
 for (let i = 0; i < N; ++i) {
   for (let j = 0; j < N; ++j) {
-    map.set(arr[i], map.get(arr[i]) - 1);
-    if (i === j) {
-      map.set(arr[i], map.get(arr[i]) + 1);
-      continue;
-    } else if (map.has(arr[i] - arr[j]) && map.get(arr[i] - arr[j]) > 0) {
+    if (map.has(arr[i] - arr[j]) && map.get(arr[i] - arr[j]) > 0) {
       if (arr[j] + arr[j] === arr[i]) {
         if (map.get(arr[j]) >= 2) {
-          count++;
-          map.set(arr[i], map.get(arr[i]) + 1);
+          i !== k && j !== k && count++;
           break;
         } else {
-          map.set(arr[i], map.get(arr[i]) + 1);
           continue;
         }
       } else {
         count++;
-        map.set(arr[i], map.get(arr[i]) + 1);
         break;
       }
-    } else {
-      map.set(arr[i], map.get(arr[i]) + 1);
     }
   }
 }
@@ -47,3 +38,26 @@ for (let i = 0; i < N; ++i) {
 console.log(count);
 
 // 풀이가 너무 더럽다.
+
+const solution = () => {
+  let count = 0;
+  arr.sort((a, b) => a - b);
+  for (let i = 0; i < N; ++i) {
+    let left = 0;
+    let right = N - 1;
+    while (i < j) {
+      if (arr[left] + arr[right] === arr[i]) {
+        if (left !== i && right !== i) {
+          count++;
+          break;
+        } else if (left === i) left++;
+        else if (right === i) right--;
+      } else if (arr[left] + arr[right] < arr[i]) {
+        left++;
+      } else right--;
+    }
+  }
+  return count;
+};
+
+console.log(solution());
