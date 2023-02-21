@@ -1,11 +1,11 @@
-/*const input = require("fs")
-  .readFileSync("/dev/stdin")
-  .toString()
-  .trim()
-  .split("\n");*/
+// const input = require("fs")
+//   .readFileSync("/dev/stdin")
+//   .toString()
+//   .trim()
+//   .split("\n");
 
-const input = `9 1
-1 5 2 3 5 3 2 3 4`
+const input = `12 3
+1 5 2 3 6 2 3 7 3 5 2 6`
   .trim()
   .split("\n");
 
@@ -21,8 +21,6 @@ class Deque {
     if (this.isEmpty()) {
       this.front = node;
       this.rear = node;
-      node.prev = null;
-      node.next = null;
     } else {
       this.front.prev = node;
       node.next = this.front;
@@ -54,10 +52,8 @@ class Deque {
     if (this.isEmpty()) {
       this.front = node;
       this.rear = node;
-      node.prev = null;
-      node.next = null;
     } else {
-      this.rear.prev = node;
+      this.rear.next = node;
       node.next = null;
       node.prev = this.rear;
       this.rear = node;
@@ -83,11 +79,18 @@ class Deque {
   }
 
   get_front() {
-    return this.front && this.front.data;
+    if (this.isEmpty()) {
+      return false;
+    } else {
+      return this.front.data;
+    }
   }
-
   get_rear() {
-    return this.rear && this.rear.data;
+    if (this.isEmpty()) {
+      return false;
+    } else {
+      return this.rear.data;
+    }
   }
 
   isEmpty() {
@@ -104,16 +107,22 @@ class Node {
 
 const [N, L] = input[0].split(" ").map(Number);
 const arr = input[1].split(" ").map(Number);
-
+let answer = "";
 let deque = new Deque();
 for (let i = 0; i < N; ++i) {
   let now = arr[i];
-  while (!deque.isEmpty() && deque.get_rear()?.value > now) {
+  while (!deque.isEmpty() && deque.get_rear().value > now) {
     deque.pop_rear();
   }
   deque.put_rear({ index: i, value: now });
   if (deque.get_front().index <= i - L) {
     deque.pop_front();
   }
-  process.stdout.write(deque.get_front()?.value + " ");
+  answer += deque.get_front().value + " ";
+  if (i % 10000 === 0) {
+    process.stdout.write(answer);
+    answer = "";
+  }
 }
+
+console.log(answer.trimEnd());
