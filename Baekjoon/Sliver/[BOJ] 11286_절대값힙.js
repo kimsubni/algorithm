@@ -127,5 +127,3 @@ for (let i = 0; i < N; ++i) {
 }
 
 console.log(answer);
-
-// 우선순위를 정해줘야 한다.
