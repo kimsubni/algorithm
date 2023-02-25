@@ -11,26 +11,6 @@ const input = `5 2
 const [N, K] = input[0].split(" ").map(Number);
 const arr = input[1].split(" ").map(Number);
 
-function quickSort1(arr) {
-  let start = 0;
-  let end = arr.length - 1;
-  let pivot = Math.floor((start + end) / 2);
-
-  while (start <= end) {
-    if (arr[pivot] >= arr[start]) start++;
-    if (arr[pivot] <= end) end--;
-    // 만약 멈췄으면  start 와 end 값을 바꿔준다.
-    if (arr[pivot] < start && arr[pivot] > end) {
-      // 둘다 해당되면,
-      let tmp = arr[start];
-      arr[start] = arr[end];
-      arr[end] = tmp;
-    }
-  }
-
-  quickSort1(arr.slice(0, end));
-  quickSort1(arr.slice(start, arr.length));
-}
 function quickSort(array, left, right) {
   if (left >= right) {
     return;
