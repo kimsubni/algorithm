@@ -43,3 +43,30 @@ const mergeSort1 = (array) => {
   return merge1(mergeSort1(left), mergeSort1(array));
 };
 console.log(mergeSort1(arr));
+
+const mergeSort2 = (arr) => {
+  if (arr.length === 1) return arr;
+
+  let mid = Math.floor(arr.length / 2);
+  let left = arr.slice(0, mid);
+  let right = arr.slice(mid);
+
+  return merge2(mergeSort2(left), mergeSort2(right));
+};
+
+const merge2 = (left, right) => {
+  let resultArr = [];
+  let leftIdx = 0;
+  let rightIdx = 0;
+
+  while (leftIdx < left.length && rightIdx < right.length) {
+    if (left[leftIdx] < right[rightIdx]) {
+      resultArr.push(left[leftIdx]);
+      leftIdx++;
+    } else {
+      resultArr.push(right[rightIdx]);
+      rightIdx++;
+    }
+  }
+  return resultArr.concat(left.slice(leftIdx), right.slice(rightIdx));
+};
