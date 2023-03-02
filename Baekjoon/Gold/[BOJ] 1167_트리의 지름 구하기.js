@@ -1,15 +1,22 @@
-const input = require("fs")
-  .readFileSync("/dev/stdin")
-  .toString()
-  .trim()
-  .split("\n");
+// const input = require("fs")
+//   .readFileSync("/dev/stdin")
+//   .toString()
+//   .trim()
+//   .split("\n");
   
+const input = `5
+1 5 1 -1
+5 1 1 4 10 -1
+4 3 10 5 10 -1
+3 2 10 4 10 -1
+2 3 10 -1`.trim().split("\n")
+
 // const input = `5
-// 1 5 1 -1
-// 5 1 1 4 10 -1
-// 4 3 10 5 10 -1
-// 3 2 10 4 10 -1
-// 2 3 10 -1`.trim().split("\n")
+// 1 3 2 -1
+// 2 4 4 -1
+// 3 1 2 4 3 -1
+// 4 2 4 3 3 5 6 -1
+// 5 4 6 -1`.trim().split("\n")
 
 const N = Number(input[0]);
 
@@ -57,53 +64,54 @@ class Graph {
     delete this.edges[vertex];
   }
 }
-
+const startNodeidx = [];
 const graph = new Graph();
 for (let i = 1; i < N + 1; ++i) {
   const now = input[i].split(" ").map(Number);
   const nowIdx = now[0];
+  if(now.length===4){
+    startNodeidx.push(nowIdx);
+  }
   for (let j = 1; j < now.length; j += 2) {
     if (now[j] === -1) break;
     graph.addEdge(nowIdx, now[j], now[j + 1]);
   }
 }
 
+let visited = new Array(N+1).fill(false);
+let distance = new Array(N+1).fill(0);
 
-class Node{
-  constructor(val, distance){
-    this.val = val;
-    this.distance = distance;
-  }
-}
-let max = 0;
-const dfs = (start, visited) => {
+const dfs = (start) => {
   const stack = [];
-  stack.push(new Node(start, 0));
+  stack.push(start);
   while(stack.length){
     const now = stack.pop();
-    if(visited[now.val]) {
+    if(visited[now]) {
       continue};
 
-    visited[now.val] = true;
+    visited[now] = true;
   
-    max = Math.max(max, now.distance);
-    
-    const obj = Object.keys(graph.edges[
-      now.val]);
   
-    if(obj.length>0){
-      for(const next of obj){
+      for(const next in graph.edges[now]){
         if(!visited[next]) {
-          stack.push(new Node(next, now.distance+graph.edges[now.val][next]));
-          
-        }
+          stack.push(next);
+          distance[next] = distance[now] +  graph.edges[now][next];
       }
     }
   }
 };
+  dfs(1)
+  let maxIdx = 1;
+  for(let i = 2; i < N+1; ++i){
+    if(distance[maxIdx] <distance[i]){
+      maxIdx = i;
+    }
+  }
+  distance = new Array(N+1).fill(0);
+  visited = new Array(N+1).fill(false);
+  dfs(maxIdx);
+  
+  distance.sort((a,b)=>a-b);
+  
 
-for(let i =1; i <N+1; ++i){
-  dfs(i,new Array(N+1).fill(false))
-}
-
-console.log(max)
+console.log(distance[N])
