@@ -51,3 +51,24 @@ while(start <= end){
   }
 }
 console.log(start);
+
+while(low<=high){
+  let middle = Math.floor((low+high)/2);
+  let sum = 0;
+  
+  for(let i = 0; i < N; ++i){
+    if(sum+arr[i] > middle){
+      count++;
+      sum = 0;
+    }
+    sum = sum + arr[i];
+  }
+  if(sum!=0){
+    count++;
+  }
+  if(count>M){
+    start = middle+1;
+  }else{
+    end = middle -1;
+  }
+}   
