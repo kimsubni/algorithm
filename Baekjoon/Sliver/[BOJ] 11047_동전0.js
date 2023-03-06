@@ -34,3 +34,12 @@ for (let i = N - 1; i >= 0; --i) {
   }
 }
 console.log(count);
+
+function solution2() {
+  for (let i = N - 1; i >= 0; --i) {
+    if (arr[i] <= K) {
+      count += Math.floor(K / arr[i]);
+      K = K % A[i];
+    }
+  }
+}
