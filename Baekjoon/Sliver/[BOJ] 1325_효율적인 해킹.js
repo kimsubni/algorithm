@@ -8,8 +8,7 @@ const input = `5 4
 3 1
 3 2
 4 3
-5 3
-`
+5 3`
   .trim()
   .split("\n");
 
@@ -23,83 +22,36 @@ for (let i = 0; i < M; ++i) {
   const [A, B] = input[i + 1].split(" ").map(Number);
   graph[B].push(A);
 }
-
-class Queue {
-  constructor() {
-    this.first = null;
-    this.last = null;
-    this.size = 0;
-  }
-
-  enqueue(val) {
-    var newNode = new Node(val);
-    if (!this.first) {
-      this.first = newNode;
-      this.last = newNode;
-    } else {
-      this.last.next = newNode;
-      this.last = newNode;
-    }
-    return ++this.size;
-  }
-
-  dequeue() {
-    if (!this.first) return null;
-    let temp = this.first;
-    if (this.first === this.last) {
-      this.last = null;
-    }
-    this.first = this.first.next;
-    this.size--;
-    return temp.value;
-  }
-}
-class Node {
-  constructor(value) {
-    this.value = value;
-    this.next = null;
-  }
-}
-class Company {
-  constructor(num, depth) {
-    this.num = num;
-    this.depth = depth;
-  }
-}
-let max = -1;
-let answer = "";
-const bfs = (start) => {
+let max = 0;
+let answer = [];
+const DFS = (start) => {
+  const stack = [start];
   const visited = new Array(N + 1).fill(false);
-  const queue = new Queue();
-  queue.enqueue(new Company(start, 0));
-  let cnt = 0;
-  visited[start] = true;
-  let isFind = false;
-  while (queue.size > 0) {
-    const now = queue.dequeue();
-    if (max < now.depth) {
-      max = now.depth;
-      answer = start + " ";
-      isFind = true;
-    } else if (max === now.depth) {
-      if (!isFind) {
-        answer += start + " ";
-        isFind = true;
-      }
+  let count = 0;
+  let result = 0;
+  while (stack.length) {
+    let cur = stack.pop();
+    if (result < count) result = count;
+    visited[cur] = true;
+    for (let i = 0; i < graph[cur].length; i++) {
+      let value = graph[cur][i];
+      if (visited[value]) continue;
+      visited[value] = true;
+      count += 1;
+      stack.push(value);
     }
-    if (graph[now.num]) {
-      for (const next of graph[now.num]) {
-        if (!visited[next]) {
-          visited[next] = true;
-          queue.enqueue(new Company(next, now.depth + 1));
-        }
-      }
-    }
+  }
+  if (max < result) {
+    max = result;
+    answer = [];
+    answer.push(start);
+  } else if (max === result) {
+    answer.push(start);
   }
 };
 
-for (let i = 1; i < N + 1; ++i) {
-  bfs(i);
+for (let i = 1; i <= N; i++) {
+  DFS(i);
 }
 
-console.log(answer.trim());
+console.log(answer.join(" "));
