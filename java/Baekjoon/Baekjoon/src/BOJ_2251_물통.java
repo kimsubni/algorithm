@@ -1,4 +1,3 @@
-package Baekjoon.src;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -40,7 +39,6 @@ public class BOJ_2251_물통 {
     }
 
     public static void dfs(Bucket nowBucket) {
-        System.out.println(nowBucket);
         int A = nowBucket.A;
         int B = nowBucket.B;
         int C = now[2] - A - B;
