@@ -1,0 +1,3 @@
+{
+  "java.jdt.ls.vmargs": "-Dfile.encoding=utf8 -noverify -Xmx1G -XX:+UseG1GC -XX:+UseStringDeduplication"
+}
