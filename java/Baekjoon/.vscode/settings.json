@@ -1,3 +1,7 @@
 {
-  "java.jdt.ls.vmargs": "-Dfile.encoding=utf8 -noverify -Xmx1G -XX:+UseG1GC -XX:+UseStringDeduplication"
+    "java.project.sourcePaths": ["src"],
+    "java.project.outputPath": "bin",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar"
+    ]
 }
