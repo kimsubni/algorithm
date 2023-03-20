@@ -1,3 +1,4 @@
+package Algo;
 public class Union_Find {
     public static void main(String[] args) {
         int[] parent = new int[11];
