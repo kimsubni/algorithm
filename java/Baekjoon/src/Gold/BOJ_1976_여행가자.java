@@ -49,9 +49,6 @@ public class BOJ_1976_여행가자 {
     static void unionParent(int a, int b) {
         a = getParent(a);
         b = getParent(b);
-        if (a == b) {
-            return;
-        }
         if (a < b) {
             parent[b] = a;
         } else {
