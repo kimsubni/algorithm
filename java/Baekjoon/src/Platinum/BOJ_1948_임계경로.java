@@ -17,35 +17,21 @@ import java.util.StringTokenizer;
 public class BOJ_1948_임계경로 {
     static int N, M;
     static int start, end;
-    static int[] edges;
+    static int[] indegree;
     static int max, edgeCount;
     static boolean[][] maxVisited;
     static List<Edge>[] adjList;
+    static List<Edge>[] RadjList;
+    static int[] result;
+    static int resultCount;
 
     static class Edge {
-        private int w;
-        private int v;
+        private int targetNode;
+        private int value;
 
-        public void setEdge(int v, int w) {
-            this.v = v;
-            this.w = w;
-        }
-
-        public Edge(int v, int w) {
-            this.v = v;
-            this.w = w;
-        }
-    }
-
-    static class Person {
-        int city;
-        int time;
-        List<Integer> road;
-
-        Person(int city, int time, List<Integer> road) {
-            this.city = city;
-            this.time = time;
-            this.road = road;
+        public Edge(int targetNode, int value) {
+            this.targetNode = targetNode;
+            this.value = value;
         }
     }
 
@@ -53,13 +39,14 @@ public class BOJ_1948_임계경로 {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
         M = Integer.parseInt(br.readLine());
-        edges = new int[N + 1];
+        indegree = new int[N + 1];
         adjList = new ArrayList[N + 1];
-        maxVisited = new boolean[N + 1][N + 1];
+        RadjList = new ArrayList[N + 1];
+        result = new int[N + 1];
         for (int i = 1; i < N + 1; ++i) {
             adjList[i] = new ArrayList<Edge>();
+            RadjList[i] = new ArrayList<Edge>();
         }
-        max = 0;
 
         StringTokenizer st;
         for (int i = 0; i < M; ++i) {
@@ -68,56 +55,53 @@ public class BOJ_1948_임계경로 {
             int e = Integer.parseInt(st.nextToken());
             int t = Integer.parseInt(st.nextToken());
             adjList[s].add(new Edge(e, t));
-            edges[e]++;
+            RadjList[e].add(new Edge(s, t));
+            indegree[e]++;
         }
         st = new StringTokenizer(br.readLine());
         start = Integer.parseInt(st.nextToken());
         end = Integer.parseInt(st.nextToken());
         topologySort();
-
-        System.out.println(max);
-        System.out.println(edgeCount);
+        reverse_topologySort();
+        System.out.println(result[end]);
+        System.out.println(resultCount);
     }
 
-    static void topologySort() {
-        Queue<Person> q = new LinkedList<>();
-        // 밟고있는 도시, 시간, 밟아온 길
-        List<Integer> startRoad = new ArrayList<>();
-        startRoad.add(start);
-        q.add(new Person(start, 0, startRoad));
-        while (!q.isEmpty()) {
-            Person now = q.poll();
-            List<Edge> list = adjList[now.city];
-            if (now.city == end) {
-                if (max < now.time) {
-                    max = now.time;
-                    // 만약 max 가 더 크면 다른작업을 해야겠지. max가 더 크면 visited를 갱신해준다. 자기가 걸은 길만.
-                    // 얘가 걸어온 길만 비교해서 visited에 넣어주면? 어때? 걸어온길 ...
-                    maxVisited = new boolean[N + 1][N + 1];
-                    edgeCount = 0;
-                    for (int i = 0; i < now.road.size() - 1; ++i) {
-                        maxVisited[now.road.get(i)][now.road.get(i + 1)] = true;
-                        edgeCount++;
-                    }
-                } else if (max == now.time) {
-                    for (int i = 0; i < now.road.size() - 1; ++i) {
-                        if (!maxVisited[now.road.get(i)][now.road.get(i + 1)]) {
-                            maxVisited[now.road.get(i)][now.road.get(i + 1)] = true;
-                            edgeCount++;
-                        }
+    private static void reverse_topologySort() {
+        resultCount = 0;
+        boolean visited[] = new boolean[N + 1];
+        Queue<Integer> queue = new LinkedList<>();
+        queue.offer(end);
+        visited[end] = true;
+        while (!queue.isEmpty()) {
+            int now = queue.poll();
+            for (Edge next : RadjList[now]) {
+                // 1분도 쉬지 않는 도로 체크
+                if (result[next.targetNode] + next.value == result[now]) {
+                    resultCount++;
+                    // 중복 카운트 방지를 위해 이미 방문한 적 있는 노드 제외
+                    if (!visited[next.targetNode]) {
+                        visited[next.targetNode] = true;
+                        queue.offer(next.targetNode);
                     }
                 }
             }
-            for (int i = 0; i < list.size(); ++i) {
-                int next = list.get(i).v;
-                List<Integer> nextRoad = new ArrayList<>();
-                nextRoad.addAll(now.road);
-                nextRoad.add(next);
-                q.add(new Person(next, now.time + list.get(i).w, nextRoad));
-            }
+
         }
     }
 
+    private static void topologySort() {
+        Queue<Integer> queue = new LinkedList<>();
+        queue.offer(start);
+        while (!queue.isEmpty()) {
+            int now = queue.poll();
+            for (Edge next : adjList[now]) {
+                indegree[next.targetNode]--;
+                result[next.targetNode] = Math.max(result[next.targetNode], result[now] + next.value);
+                if (indegree[next.targetNode] == 0) {
+                    queue.offer(next.targetNode);
+                }
+            }
+        }
+    }
 }
-
-// 로드를 걷고있는데 edges 가 처음과 비교했을 때 몇개가 줄었나를 통해 알아볼수있나?
