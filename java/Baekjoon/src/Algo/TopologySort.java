@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class Topology_Sort {
+public class TopologySort {
     public static void main(String[] args) throws IOException {
 
         // 위상정렬 결과 출력할 객체

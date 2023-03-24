@@ -1,5 +1,5 @@
 package Algo;
-public class Union_Find {
+public class UnionFind {
     public static void main(String[] args) {
         int[] parent = new int[11];
         for (int i = 1; i <= 10; ++i) {
