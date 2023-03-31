@@ -14,7 +14,7 @@ public class Permutation {
         isSelected = new boolean[N];
         numbers = new int[R];
 
-        per(0);
+        perRep(0);
     }
 
     public static void per(int cnt) {
@@ -29,6 +29,18 @@ public class Permutation {
             isSelected[i] = true;
             per(cnt + 1);
             isSelected[i] = false;
+        }
+    }
+
+    public static void perRep(int cnt) {
+        if (cnt == R) {
+            System.out.println(Arrays.toString(numbers));
+            return;
+        }
+
+        for (int i = 0; i < N; ++i) {
+            numbers[cnt] = arr[i];
+            perRep(cnt + 1);
         }
     }
 }
