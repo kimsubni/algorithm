@@ -25,4 +25,15 @@ public class Combination {
             comb(i + 1, cnt + 1);
         }
     }
+
+    public static void combRep(int cnt) {
+        if (cnt == R) {
+            System.out.println(Arrays.toString(numbers));
+            return;
+        }
+        for (int i = 0; i < N; ++i) {
+            numbers[cnt] = arr[i];
+            combRep(cnt + 1);
+        }
+    }
 }
