@@ -3,7 +3,6 @@ package Silver;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class BOJ_1389_케빈베이컨의6단계법칙 {
@@ -37,8 +36,7 @@ public class BOJ_1389_케빈베이컨의6단계법칙 {
         for (int k = 1; k < N + 1; ++k) {
             for (int i = 1; i < N + 1; ++i) {
                 for (int j = 1; j < N + 1; ++j) {
-                    if (friend[i][k] >= 1 && friend[k][j] >= 1)
-                        friend[i][j] = Math.min(friend[i][j], friend[i][k] + friend[k][j]);
+                    friend[i][j] = Math.min(friend[i][j], friend[i][k] + friend[k][j]);
                 }
             }
         }
