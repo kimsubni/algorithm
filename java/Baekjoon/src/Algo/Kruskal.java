@@ -61,7 +61,7 @@ public class Kruskal {
         while (!pq.isEmpty()) {
             Edge now = pq.poll();
 
-            // 부모노드가 다를떄만 사이클x
+            // 부모노드가 다를때만 사이클x
             if (getParent(now.s) != getParent(now.e)) {
                 union(now.s, now.e);
                 weight += now.weight;
