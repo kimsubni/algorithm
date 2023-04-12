@@ -30,7 +30,7 @@ public class BOJ_5639_이진검색트리 {
             }
         }
     }
-
+    
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         Node node = new Node(Integer.parseInt(br.readLine()));
