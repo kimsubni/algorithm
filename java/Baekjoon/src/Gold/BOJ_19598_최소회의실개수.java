@@ -7,53 +7,41 @@ import java.util.Arrays;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
-public class BOJ_11000_강의실배정 {
+public class BOJ_19598_최소회의실개수 {
     static int N;
+    static Lecture[] lectures;
 
-    static class Class {
+    static class Lecture {
         int start;
         int end;
-        int num;
 
-        Class(int start, int end, int num) {
+        Lecture(int start, int end) {
             this.start = start;
             this.end = end;
-            this.num = num;
         }
-
     }
-
-    static boolean[] visited;
-    static Class[] classes;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
-        classes = new Class[N];
+        lectures = new Lecture[N];
         StringTokenizer st;
-
         for (int i = 0; i < N; ++i) {
             st = new StringTokenizer(br.readLine());
-            int start = Integer.parseInt(st.nextToken());
-            int end = Integer.parseInt(st.nextToken());
-            classes[i] = new Class(start, end, i);
+            int s = Integer.parseInt(st.nextToken());
+            int e = Integer.parseInt(st.nextToken());
+            lectures[i] = new Lecture(s, e);
         }
+        Arrays.sort(lectures, (l1, l2) -> l1.start == l2.start ? l1.end - l2.end : l1.start - l2.start);
 
-        visited = new boolean[N];
-        Arrays.sort(classes, (l1, l2) -> l1.start == l2.start ? l1.end - l2.end : l1.start - l2.start);
         PriorityQueue<Integer> pq = new PriorityQueue<>();
-        pq.offer(classes[0].end);
-
+        pq.offer(lectures[0].end);
         for (int i = 1; i < N; ++i) {
-
-            if (pq.peek() <= classes[i].start) {
+            if (lectures[i].start >= pq.peek()) {
                 pq.poll();
             }
-            pq.offer(classes[i].end);
+            pq.offer(lectures[i].end);
         }
-
         System.out.println(pq.size());
-
     }
-
 }
