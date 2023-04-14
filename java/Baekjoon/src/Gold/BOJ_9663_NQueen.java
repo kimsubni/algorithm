@@ -26,6 +26,8 @@ public class BOJ_9663_NQueen {
 
         for (int i = 0; i < N; ++i) {
             arr[d] = i;
+            // 지금 나는 d열의 i행에다가 퀸을 넣을거야.
+            // 근데 d열 가능해?
             if (Possible(d)) {
                 nQueen(d + 1);
             }
@@ -35,6 +37,7 @@ public class BOJ_9663_NQueen {
     public static boolean Possible(int c) {
         for (int i = 0; i < c; ++i) {
             if (arr[c] == arr[i]) {
+                // 만약 이전에 퀸을 넣었을 때 0열의 1행에 넣었다면 i행의 1행에도 넣으면 안되지.
                 return false;
             }
             // 대각선 찾기
