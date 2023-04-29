@@ -32,6 +32,22 @@ public class Permutation {
         }
     }
 
+    public static void per2(int cnt) {
+        if (cnt == R) {
+            System.out.println(Arrays.toString(numbers));
+            return;
+        }
+        for (int i = 0; i < N; ++i) {
+            if (isSelected[i]) {
+                continue;
+            }
+            numbers[cnt] = arr[i];
+            isSelected[i] = true;
+            per(cnt + 1);
+            isSelected[i] = false;
+        }
+    }
+
     public static void perRep(int cnt) {
         if (cnt == R) {
             System.out.println(Arrays.toString(numbers));
