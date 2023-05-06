@@ -20,6 +20,7 @@ struct cmp{
         return o1.start > o2.start;
     }
 };
+
 priority_queue<Hw, vector<Hw>, cmp> pq;
 stack<Hw> rest;
 vector<string> answer;
@@ -51,7 +52,6 @@ vector<string> split(string input, char d){
     }
     return result;
 }
-
 vector<string> solution(vector<vector<string>> plans){
     
     for(int i = 0; i < plans.size(); ++i){
