@@ -10,8 +10,6 @@ class Programmers_두원사이의정수쌍 {
 
         // y^2= r^2-x^2
 
-        long y1sum = 0;
-        long y2sum = 0;
         long side = 0;
 
         for (long i = 0; i <= r2; i++) {
