@@ -1,56 +1,71 @@
+
 import java.util.*;
 
 class Programmers_무인도여행 {
-    static char[][] map;
+    static List<Integer> ansTmp;
     static boolean[][] visited;
-    static int[] dx = { -1, 1, 0, 0 };
-    static int[] dy = { 0, 0, -1, 1 };
+    static int N, M;
 
-    public static List<Integer> solution(String[] maps) {
-        List<Integer> answer = new ArrayList<>();
-        map = new char[maps.length][maps[0].length()];
-        visited = new boolean[map.length][map[0].length];
-        for (int i = 0; i < maps.length; i++) {
-            map[i] = maps[i].toCharArray();
+    static class Pos {
+        int r, c;
+
+        Pos(int r, int c) {
+            this.r = r;
+            this.c = c;
         }
+    }
 
-        for (int i = 0; i < map.length; i++) {
-            for (int j = 0; j < map[i].length; j++) {
-                if (!visited[i][j] && map[i][j] != 'X') {
-                    answer.add(bfs(i, j));
+    static int[] dr = { -1, 0, 1, 0 };
+    static int[] dc = { 0, 1, 0, -1 };
+
+    public int[] solution(String[] maps) {
+        ansTmp = new ArrayList<>();
+        N = maps.length;
+        M = maps[0].length();
+        visited = new boolean[N][M];
+
+        for (int i = 0; i < N; ++i) {
+            for (int j = 0; j < M; ++j) {
+                if (!visited[i][j] && maps[i].charAt(j) != 'X') {
+                    bfs(maps, i, j);
                 }
             }
         }
-
-        if (answer.size() == 0) {
-            answer.add(-1);
+        int[] answer;
+        if (ansTmp.size() > 0) {
+            answer = new int[ansTmp.size()];
+            for (int i = 0; i < answer.length; ++i) {
+                answer[i] = ansTmp.get(i);
+            }
+            Arrays.sort(answer);
+        } else {
+            answer = new int[1];
+            answer[0] = -1;
         }
-        Collections.sort(answer);
+
         return answer;
     }
 
-    public static int bfs(int x, int y) {
+    static public void bfs(String[] maps, int r, int c) {
+        Queue<Pos> q = new LinkedList<>();
+        q.offer(new Pos(r, c));
+        visited[r][c] = true;
         int sum = 0;
-        Queue<int[]> q = new LinkedList<>();
-        q.offer(new int[] { x, y });
-        visited[x][y] = true;
-
         while (!q.isEmpty()) {
-            int[] cur = q.poll();
-            int cx = cur[0];
-            int cy = cur[1];
-            sum += map[cx][cy] - '0';
-            for (int i = 0; i < 4; i++) {
-                int nx = cx + dx[i];
-                int ny = cy + dy[i];
-                if (nx < 0 || ny < 0 || nx >= map.length || ny >= map[0].length)
+            Pos now = q.poll();
+            sum += maps[now.r].charAt(now.c) - '0';
+            for (int i = 0; i < 4; ++i) {
+                int nr = now.r + dr[i];
+                int nc = now.c + dc[i];
+                if (nr >= N || nc >= M || nc < 0 || nr < 0) {
                     continue;
-                if (!visited[nx][ny] && map[nx][ny] != 'X') {
-                    visited[nx][ny] = true;
-                    q.offer(new int[] { nx, ny });
+                }
+                if (!visited[nr][nc] && maps[nr].charAt(nc) != 'X') {
+                    visited[nr][nc] = true;
+                    q.offer(new Pos(nr, nc));
                 }
             }
         }
-        return sum;
+        ansTmp.add(sum);
     }
 }
