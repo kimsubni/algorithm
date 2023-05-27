@@ -1,10 +1,11 @@
 
-public import java.util.*;
-class Programmers_시소짝꿍 {
+import java.util.*;
+public class Programmers_시소짝꿍 {
     public long solution(int[] weights) {
         Map<Double, Integer> hm = new HashMap<>();
 		long ret = 0;
         Arrays.sort(weights);
+		// 정렬한다. 
 		for(int weight : weights) {
 			ret += helper(weight, hm);
 		}
