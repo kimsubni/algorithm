@@ -2,26 +2,38 @@
 import java.util.*;
 
 public class Programmers_뒤에있는큰수 {
-    public int[] solution(int[] numbers) {
-        Stack<Integer> stack = new Stack<>();
-        int[] ret = new int[numbers.length];
+    static class Node implements Comparable<Node> {
+        int id, num;
 
-        for (int i = 0; i < numbers.length; i++) {
-            // 하강 직선일 때는 push
-            if (stack.isEmpty() || numbers[i] < numbers[i - 1]) {
-                stack.push(i);
-            } else {
-                // 현재값보다 작은 index는 pop하여 현재값으로
-                while (!stack.isEmpty() && numbers[stack.peek()] < numbers[i]) {
-                    ret[stack.pop()] = numbers[i];
+        Node(int id, int num) {
+            this.id = id;
+            this.num = num;
+        }
+
+        @Override
+        public int compareTo(Node o) {
+            return Integer.compare(this.num, o.num);
+        }
+    }
+
+    public int[] solution(int[] numbers) {
+        int N = numbers.length;
+        int[] answer = new int[N];
+        Arrays.fill(answer, -1);
+        PriorityQueue<Node> pq = new PriorityQueue<>();
+        pq.add(new Node(0, numbers[0]));
+        for (int i = 1; i < N; ++i) {
+            while (!pq.isEmpty()) {
+                Node prev = pq.peek();
+                if (prev.num < numbers[i]) {
+                    answer[prev.id] = numbers[i];
+                    pq.poll();
+                } else {
+                    break;
                 }
-                stack.push(i);
             }
+            pq.offer(new Node(i, numbers[i]));
         }
-        // 나머지는 -1
-        while (!stack.isEmpty()) {
-            ret[stack.pop()] = -1;
-        }
-        return ret;
+        return answer;
     }
 }
