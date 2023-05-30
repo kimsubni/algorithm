@@ -22,19 +22,17 @@ public class Porgrammers_파괴되지않은건물 {
         }
         // 가로 누적합 계산
         for (int i = 0; i < N + 1; i++) {
-            int sum = 0;
             for (int j = 0; j < M + 1; j++) {
-                sum += preSum[i][j];
-                preSum[i][j] = sum;
+                int p = j - 1 >= 0 ? preSum[i][j - 1] : 0;
+                preSum[i][j] += p;
             }
         }
 
         // 세로 누적합 계산
-        for (int i = 0; i < M; i++) {
-            int sum = 0;
-            for (int j = 0; j < N; j++) {
-                sum += preSum[j][i];
-                preSum[j][i] = sum;
+        for (int i = 0; i < M + 1; i++) {
+            for (int j = 0; j < N + 1; j++) {
+                int p = j - 1 >= 0 ? preSum[j - 1][i] : 0;
+                preSum[j][i] += p;
             }
         }
 
