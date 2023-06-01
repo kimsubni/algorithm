@@ -1,20 +1,4 @@
 
-// while(sum1 != sum2) {
-// if(sum1 > sum2) {
-// int n = q1.poll();
-// sum1 -= n;
-// sum2 += n;
-// q2.offer(n);
-// } else {
-// int n = q2.poll();
-// sum2 -= n;
-// sum1 += n;
-// q1.offer(n);
-// }
-// answer++;
-// if(answer > 600000) return -1;
-// }
-
 import java.util.*;
 
 public class Programmers_두큐합같게만들기 {
