@@ -31,9 +31,11 @@ public class Programmers_양과늑대2 {
         // 이제 다음 상태로 넘어갈 시간
         for (int i = 0; i < n; ++i) {
             // i 번째 비트가 꺼져있는 경우 해당 접점이 없으니 넘어감
-            if ((state & (i << i)) == 0)
+            if ((state & (1 << i)) == 0)
+                // 꺼져있다 = 갈수없다. 맞지.
                 continue;
             if (l[i] != -1)
+                // i의 왼쪽자식이면 왼쪽자식을 방문처리해주겠지.
                 solve(state | (1 << l[i]));
             // 현재 보고 있는 i번째 정점의 right가 있다면
             if (r[i] != -1)
