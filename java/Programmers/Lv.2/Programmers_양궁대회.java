@@ -79,3 +79,87 @@ public class Programmers_양궁대회 {
     }
 
 }
+
+// 비트마스킹
+class Solution {
+
+    int max, ans[], apeach[];
+
+    void find(int n, int cur) {
+        int score = 0, state[] = new int[11];
+        for (int i = 1; i <= 10; i++) {
+            if ((cur & 1 << i) > 0) {
+                n -= state[10 - i] = apeach[10 - i] + 1;
+                if (n < 0)
+                    return;
+                score += i;
+            } else if (apeach[10 - i] > 0)
+                score -= i;
+        }
+        if (score <= 0)
+            return;
+        state[10] = n;
+        if (max < score) {
+            max = score;
+            ans = state;
+        } else if (max == score) {
+            for (int i = 10; i >= 0; i--) {
+                if (ans[i] != state[i]) {
+                    if (state[i] > ans[i])
+                        ans = state;
+                    return;
+                }
+            }
+        }
+    }
+
+    int[] solution(int n, int[] info) {
+        apeach = info;
+        for (int i = 1; i < 1 << 11; i++)
+            if (Integer.bitCount(i) <= n)
+                find(n, i);
+
+        return max == 0 ? new int[] { -1 } : ans;
+    }
+}
+
+// 다른 방법~
+class OtherSolution {
+    static int[] res = { -1 };
+    static int[] lion;
+    static int max = -1000;
+
+    public void dfs(int[] info, int cnt, int n) {
+        if (cnt == n + 1) {
+            int apeach_point = 0;
+            int lion_point = 0;
+            for (int i = 0; i <= 10; i++) {
+                if (info[i] != 0 || lion[i] != 0) {
+                    if (info[i] < lion[i])
+                        lion_point += 10 - i;
+                    else
+                        apeach_point += 10 - i;
+                }
+            }
+            if (lion_point > apeach_point) {
+                if (lion_point - apeach_point >= max) {
+                    res = lion.clone();
+                    max = lion_point - apeach_point;
+                }
+            }
+            return;
+        }
+
+        for (int j = 0; j <= 10 && lion[j] <= info[j]; j++) {
+            lion[j]++;
+            dfs(info, cnt + 1, n);
+            lion[j]--;
+        }
+    }
+
+    public int[] solution(int n, int[] info) {
+        lion = new int[11];
+        dfs(info, 1, n);
+        return res;
+    }
+}
