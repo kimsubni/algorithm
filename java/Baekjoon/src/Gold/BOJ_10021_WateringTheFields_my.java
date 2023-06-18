@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
-public class BOJ_10021_WateringTheFields {
+public class BOJ_10021_WateringTheFields_my {
     static int N, C;
     static int[] parent;
 
@@ -51,6 +51,7 @@ public class BOJ_10021_WateringTheFields {
             int y = Integer.parseInt(st.nextToken());
             field[i] = new Field(x, y);
         }
+        // 넣었다. 그러면 이제 i번째 field랑 j번째 field의 거리를 담은 node를
         PriorityQueue<Node> pq = new PriorityQueue<>((o1, o2) -> (int) (o1.value - o2.value));
         for (int i = 0; i < N - 1; ++i) {
             for (int j = i + 1; j < N; ++j) {
@@ -59,30 +60,28 @@ public class BOJ_10021_WateringTheFields {
             }
         }
 
-        int sum = 0;
-        int count = 0;
+        long sum = 0;
+        int cnt = 0;
         while (!pq.isEmpty()) {
-            Node node = pq.poll();
-            if (node.value < C) {
+            Node now = pq.poll();
+            if (now.value < C)
                 continue;
-            }
-            int x = node.x;
-            int y = node.y;
+            int x = now.x;
+            int y = now.y;
             if (!isSameParent(x, y)) {
-                sum += node.value;
+                sum += now.value;
                 union(x, y);
-                count++;
+                cnt++;
             }
-            if (count == N - 1) {
+            if (cnt == N - 1)
                 break;
-            }
         }
-        if (count != N - 1) {
+
+        if (cnt != N - 1) {
             System.out.println(-1);
             return;
         }
         System.out.println(sum);
-
     }
 
     static int getParent(int x) {
@@ -90,13 +89,6 @@ public class BOJ_10021_WateringTheFields {
             return x;
         }
         return parent[x] = getParent(parent[x]);
-    }
-
-    static void union(int a, int b) {
-        a = getParent(a);
-        b = getParent(b);
-        if (a != b)
-            parent[b] = a;
     }
 
     static boolean isSameParent(int a, int b) {
@@ -108,7 +100,15 @@ public class BOJ_10021_WateringTheFields {
         return false;
     }
 
-    static int euclid(Field a, Field b) {
+    static void union(int a, int b) {
+        a = getParent(a);
+        b = getParent(b);
+        if (a != b) {
+            parent[b] = a;
+        }
+    }
+
+    static long euclid(Field a, Field b) {
         return (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y);
     }
 }
